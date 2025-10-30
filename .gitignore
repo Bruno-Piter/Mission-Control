@@ -1,0 +1,33 @@
+bin/
+obj/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+.idea/
+
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Node/Vite (front)
+front/node_modules/
+front/dist/
+front/.vite/
+front/coverage/
+front/.env
+front/.env.*
+front/.DS_Store
+
+# --- OS
+.DS_Store
+Thumbs.db
+
+*.db
+*.pfx
+
+
+**/.env
