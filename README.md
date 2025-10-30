@@ -1,18 +1,16 @@
-
-
-
-https://github.com/user-attachments/assets/3a3cd84f-b4eb-4803-97ce-4177268a2228
-
-
-
 # Mission-Control
 
-Plataforma didática de **integração com microsserviços** em .NET 8 que demonstra:
+Plataforma de **integração com microsserviços** .NET 8 que demonstra:
 - **Mensageria** com RabbitMQ + MassTransit
 - **Idempotência** no consumidor de billing (SQLite/EF Core)
 - **Observabilidade** com OpenTelemetry + Zipkin
 - **Admin API** para listar filas e **reprocessar DLQ**
 - **Dashboard React** para operar (criar pedidos, monitorar filas e reprocessar DLQ) + experiência do usuário mais fluida
+
+
+https://github.com/user-attachments/assets/3a3cd84f-b4eb-4803-97ce-4177268a2228
+
+
 
 ## 🔭 Arquitetura (alto nível)
 
