@@ -1,3 +1,10 @@
+
+
+
+https://github.com/user-attachments/assets/3a3cd84f-b4eb-4803-97ce-4177268a2228
+
+
+
 # Mission-Control
 
 Plataforma didática de **integração com microsserviços** em .NET 8 que demonstra:
@@ -68,7 +75,7 @@ Mission-Control/
 ## 🚀 Subir infraestrutura
 
 ```powershell
-cd C:\Users\piter\Desktop\Mission-Control
+cd C:\...\Mission-Control
 docker compose up -d
 # RabbitMQ UI: http://localhost:15672  (guest/guest)
 # Zipkin UI:   http://localhost:9411
@@ -101,7 +108,7 @@ app.UseCors("dev");
 
 **(A) Order API – porta 5000**
 ```powershell
-cd C:\Users\piter\Desktop\Mission-Control
+cd C:\...\Mission-Control
 $env:ASPNETCORE_URLS="http://localhost:5000"
 $env:ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
 $env:RABBITMQ__HOST="localhost"
@@ -110,7 +117,7 @@ dotnet run --project .\src\OrderApi\OrderApi.csproj
 
 **(B) BillingWorker**
 ```powershell
-cd C:\Users\piter\Desktop\Mission-Control
+cd C:\...\Mission-Control
 $env:ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
 $env:RABBITMQ__HOST="localhost"
 dotnet run --project .\src\BillingWorker\BillingWorker.csproj
@@ -118,7 +125,7 @@ dotnet run --project .\src\BillingWorker\BillingWorker.csproj
 
 **(C) NotifierWorker**
 ```powershell
-cd C:\Users\piter\Desktop\Mission-Control
+cd C:\...\Mission-Control
 $env:ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
 $env:RABBITMQ__HOST="localhost"
 dotnet run --project .\src\NotifierWorker\NotifierWorker.csproj
@@ -126,7 +133,7 @@ dotnet run --project .\src\NotifierWorker\NotifierWorker.csproj
 
 **(D) AdminApi – porta 5080**
 ```powershell
-cd C:\Users\piter\Desktop\Mission-Control
+cd C:\...\Mission-Control
 $env:ASPNETCORE_URLS="http://localhost:5080"
 $env:ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
 $env:RABBITMQ__HOST="localhost"
@@ -139,7 +146,7 @@ dotnet run --project .\src\AdminApi\AdminApi.csproj
 ## 🖥️ Front (dashboard)
 
 ```powershell
-cd C:\Users\piter\Desktop\Mission-Control\front
+cd C:\...\Mission-Control\front
 npm install
 npm run dev
 # http://localhost:5173
