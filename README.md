@@ -16,29 +16,29 @@ https://github.com/user-attachments/assets/3a3cd84f-b4eb-4803-97ce-4177268a2228
 
 ```mermaid
 flowchart LR
-  subgraph UI[Front - Mission Control (Vite/React)]
-    A1[HealthStatus] -->|/health,/queues| AdminApi
-    A2[OrderForm] -->|POST /orders| OrderApi
-    A3[DLQManager] -->|POST /dlq/replay| AdminApi
-    A4[QueueMonitor] -->|GET /queues| AdminApi
+  subgraph UI["Front - Mission Control (Vite/React)"]
+    A1[HealthStatus] -->|"GET /health, GET /queues"| AdminApi
+    A2[OrderForm] -->|"POST /orders"| OrderApi
+    A3[DLQManager] -->|"POST /dlq/replay"| AdminApi
+    A4[QueueMonitor] -->|"GET /queues"| AdminApi
   end
 
-  OrderApi[[Order API (.NET)]] -->|publish OrderCreated| RabbitMQ[(RabbitMQ)]
-  RabbitMQ -->|consume| BillingWorker[[Billing Worker (.NET + EF/SQLite)]]
-  BillingWorker -->|publish BillingCompleted| RabbitMQ
-  RabbitMQ -->|consume| NotifierWorker[[Notifier Worker (.NET)]]
+  OrderApi[["Order API (.NET)"]] -->|"publish OrderCreated"| RabbitMQ[(RabbitMQ)]
+  RabbitMQ -->|"consume"| BillingWorker[["Billing Worker (.NET + EF/SQLite)"]]
+  BillingWorker -->|"publish BillingCompleted"| RabbitMQ
+  RabbitMQ -->|"consume"| NotifierWorker[["Notifier Worker (.NET)"]]
 
-  AdminApi[[Admin API (.NET)]]
-  AdminApi <-->|Management HTTP| RabbitMQ
+  AdminApi[["Admin API (.NET)"]]
+  AdminApi <-->|"Management HTTP"| RabbitMQ
 
-  subgraph Obs[Observabilidade]
+  subgraph Obs["Observabilidade"]
     Zipkin[(Zipkin)]
   end
 
-  OrderApi -.OTEL.-> Zipkin
-  BillingWorker -.OTEL.-> Zipkin
-  NotifierWorker -.OTEL.-> Zipkin
-  AdminApi -.OTEL.-> Zipkin
+  OrderApi -. OTEL .-> Zipkin
+  BillingWorker -. OTEL .-> Zipkin
+  NotifierWorker -. OTEL .-> Zipkin
+  AdminApi -. OTEL .-> Zipkin
 ```
 
 ## 🧰 Tech Stack
