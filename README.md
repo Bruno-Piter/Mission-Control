@@ -41,7 +41,7 @@ flowchart LR
   AdminApi -. OTEL .-> Zipkin
 ```
 
-## 🧰 Tech Stack
+## 🧰 Tech Stack 🧰
 
 - **.NET 8** (Minimal APIs & Worker Service), **MassTransit**, **RabbitMQ**
 - **EF Core + SQLite** (idempotência por `OrderId`)
@@ -49,7 +49,7 @@ flowchart LR
 - **Vite + React + TS + Tailwind** (dashboard)
 - **Docker Compose** (RabbitMQ + Zipkin)
 
-## 🗂️ Estrutura (resumo)
+## 🗂️ Estrutura (resumo) 🗂️
 
 ```
 Mission-Control/
@@ -64,13 +64,13 @@ Mission-Control/
   front/                            # Vite/React dashboard
 ```
 
-## ✅ Pré-requisitos
+## ✅ Pré-requisitos ✅
 
 - **.NET 8 SDK**
 - **Node 18+** e **npm**
 - **Docker Desktop** em execução
 
-## 🚀 Subir infraestrutura
+## 🚀 Subir infraestrutura 🚀
 
 ```powershell
 cd C:\...\Mission-Control
@@ -79,7 +79,7 @@ docker compose up -d
 # Zipkin UI:   http://localhost:9411
 ```
 
-## 🔓 CORS nas APIs (obrigatório para o front em 5173)
+## 🔓 CORS nas APIs 🔓
 
 Em **OrderApi/Program.cs** e **AdminApi/Program.cs** (após `CreateBuilder`):
 
@@ -100,7 +100,7 @@ app.UseCors("dev");
 
 > Workers não precisam de CORS.
 
-## ▶️ Executar serviços (.NET) — 4 terminais
+## ▶️ Executar serviços (.NET) — 4 terminais ▶️
 
 > Ajuste o caminho base se necessário. Rode cada bloco em um **PowerShell** separado.
 
@@ -141,7 +141,7 @@ $env:RABBITMQ__MGMTURI="http://localhost:15672"
 dotnet run --project .\src\AdminApi\AdminApi.csproj
 ```
 
-## 🖥️ Front (dashboard)
+## 🖥️ Front (dashboard) 🖥️
 
 ```powershell
 cd C:\...\Mission-Control\front
@@ -205,7 +205,7 @@ Depois, **remova** a falha e reinicie o worker. No front → **DLQ Manager**:
   - `GET /queues` → filas (via RabbitMQ Management API)
   - `POST /dlq/replay?queue=<fila_error>&count=10` → **reprocessa DLQ**
 
-## 🌱 Variáveis de ambiente (resumo)
+## 🌱 Variáveis de ambiente (resumo) 🌱
 
 | Serviço        | Variáveis                                                                                           |
 |----------------|------------------------------------------------------------------------------------------------------|
@@ -214,7 +214,7 @@ Depois, **remova** a falha e reinicie o worker. No front → **DLQ Manager**:
 | NotifierWorker | `ZIPKIN_ENDPOINT`, `RABBITMQ__HOST`, (`RABBITMQ__USERNAME`/`RABBITMQ__PASSWORD`)                    |
 | AdminApi       | `ASPNETCORE_URLS`, `ZIPKIN_ENDPOINT`, `RABBITMQ__HOST`, `RABBITMQ__USERNAME`, `RABBITMQ__PASSWORD`, `RABBITMQ__MGMTURI` |
 
-## 🧯 Troubleshooting
+## 🧯 Troubleshooting 🧯
 
 - **`npm i` ENOENT** → rode dentro de `front\` (onde existe `package.json`).
 - **CORS bloqueando fetch** → confirme `app.UseCors("dev")` nas APIs e origem `http://localhost:5173`.
@@ -223,7 +223,7 @@ Depois, **remova** a falha e reinicie o worker. No front → **DLQ Manager**:
 - **Zipkin vazio** → confira `ZIPKIN_ENDPOINT` em **todas** as apps.
 - **Portas ocupadas** → altere `ASPNETCORE_URLS` ou encerre processos que usam 5000/5080.
 
-## 🛣️ Roadmap
+## 🛣️ Roadmap 🛣️
 
 - **Azure Service Bus** como transporte alternativo (MassTransit).
 - **Cosmos DB** para idempotência/auditoria.
