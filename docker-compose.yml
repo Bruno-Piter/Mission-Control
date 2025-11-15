@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   rabbitmq:
     image: rabbitmq:3-management
@@ -18,3 +17,52 @@ services:
     image: openzipkin/zipkin
     ports:
       - "9411:9411"
+
+  orderapi:
+    build:
+      context: ./src/OrderApi
+    ports:
+      - "5000:5000"
+    environment:
+      - ASPNETCORE_URLS=http://+:5000
+      - ZIPKIN_ENDPOINT=http://zipkin:9411/api/v2/spans
+      - RABBITMQ__HOST=rabbitmq
+    depends_on:
+      - rabbitmq
+      - zipkin
+
+  billingworker:
+    build:
+      context: ./src/BillingWorker
+    environment:
+      - ZIPKIN_ENDPOINT=http://zipkin:9411/api/v2/spans
+      - RABBITMQ__HOST=rabbitmq
+    depends_on:
+      - rabbitmq
+      - zipkin
+
+  notifierworker:
+    build:
+      context: ./src/NotifierWorker
+    environment:
+      - ZIPKIN_ENDPOINT=http://zipkin:9411/api/v2/spans
+      - RABBITMQ__HOST=rabbitmq
+    depends_on:
+      - rabbitmq
+      - zipkin
+
+  adminapi:
+    build:
+      context: ./src/AdminApi
+    ports:
+      - "5080:5080"
+    environment:
+      - ASPNETCORE_URLS=http://+:5080
+      - ZIPKIN_ENDPOINT=http://zipkin:9411/api/v2/spans
+      - RABBITMQ__HOST=rabbitmq
+      - RABBITMQ__USERNAME=guest
+      - RABBITMQ__PASSWORD=guest
+      - RABBITMQ__MGMTURI=http://rabbitmq:15672
+    depends_on:
+      - rabbitmq
+      - zipkin
