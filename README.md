@@ -72,12 +72,18 @@ Mission-Control/
 
 ## 🚀 Subir infraestrutura 🚀
 
+Com o Docker Desktop em execução, suba toda a infraestrutura (RabbitMQ, Zipkin e os serviços .NET) com um único comando:
+
 ```powershell
 cd C:\...\Mission-Control
-docker compose up -d
-# RabbitMQ UI: http://localhost:15672  (guest/guest)
-# Zipkin UI:   http://localhost:9411
+docker compose up --build
 ```
+
+A opção `--build` garante que as imagens Docker para os serviços .NET sejam construídas antes de iniciar os contêineres.
+
+Interfaces disponíveis:
+- **RabbitMQ UI:** http://localhost:15672 (guest/guest)
+- **Zipkin UI:** http://localhost:9411
 
 ## 🔓 CORS nas APIs 🔓
 
@@ -100,48 +106,9 @@ app.UseCors("dev");
 
 > Workers não precisam de CORS.
 
-## ▶️ Executar serviços (.NET) — 4 terminais ▶️
-
-> Ajuste o caminho base se necessário. Rode cada bloco em um **PowerShell** separado.
-
-**(A) Order API – porta 5000**
-```powershell
-cd C:\...\Mission-Control
-$env:ASPNETCORE_URLS="http://localhost:5000"
-$env:ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
-$env:RABBITMQ__HOST="localhost"
-dotnet run --project .\src\OrderApi\OrderApi.csproj
-```
-
-**(B) BillingWorker**
-```powershell
-cd C:\...\Mission-Control
-$env:ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
-$env:RABBITMQ__HOST="localhost"
-dotnet run --project .\src\BillingWorker\BillingWorker.csproj
-```
-
-**(C) NotifierWorker**
-```powershell
-cd C:\...\Mission-Control
-$env:ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
-$env:RABBITMQ__HOST="localhost"
-dotnet run --project .\src\NotifierWorker\NotifierWorker.csproj
-```
-
-**(D) AdminApi – porta 5080**
-```powershell
-cd C:\...\Mission-Control
-$env:ASPNETCORE_URLS="http://localhost:5080"
-$env:ZIPKIN_ENDPOINT="http://localhost:9411/api/v2/spans"
-$env:RABBITMQ__HOST="localhost"
-$env:RABBITMQ__USERNAME="guest"
-$env:RABBITMQ__PASSWORD="guest"
-$env:RABBITMQ__MGMTURI="http://localhost:15672"
-dotnet run --project .\src\AdminApi\AdminApi.csproj
-```
-
 ## 🖥️ Front (dashboard) 🖥️
+
+Em um terminal separado, inicie o dashboard React:
 
 ```powershell
 cd C:\...\Mission-Control\front
@@ -204,15 +171,6 @@ Depois, **remova** a falha e reinicie o worker. No front → **DLQ Manager**:
   - `GET /health` → status da AdminApi
   - `GET /queues` → filas (via RabbitMQ Management API)
   - `POST /dlq/replay?queue=<fila_error>&count=10` → **reprocessa DLQ**
-
-## 🌱 Variáveis de ambiente (resumo) 🌱
-
-| Serviço        | Variáveis                                                                                           |
-|----------------|------------------------------------------------------------------------------------------------------|
-| OrderApi       | `ASPNETCORE_URLS`, `ZIPKIN_ENDPOINT`, `RABBITMQ__HOST`, (`RABBITMQ__USERNAME`/`RABBITMQ__PASSWORD`) |
-| BillingWorker  | `ZIPKIN_ENDPOINT`, `RABBITMQ__HOST`, (`RABBITMQ__USERNAME`/`RABBITMQ__PASSWORD`)                    |
-| NotifierWorker | `ZIPKIN_ENDPOINT`, `RABBITMQ__HOST`, (`RABBITMQ__USERNAME`/`RABBITMQ__PASSWORD`)                    |
-| AdminApi       | `ASPNETCORE_URLS`, `ZIPKIN_ENDPOINT`, `RABBITMQ__HOST`, `RABBITMQ__USERNAME`, `RABBITMQ__PASSWORD`, `RABBITMQ__MGMTURI` |
 
 ## 🧯 Troubleshooting 🧯
 
